@@ -2,8 +2,12 @@ package com.isabelle.brosas_quiz;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,9 +25,6 @@ public class MainActivity extends AppCompatActivity {
     EditText et_password;
     Button btn_remember;
     Button btn_login;
-    TextView tv_display;
-    FileOutputStream fos;
-    FileInputStream fis;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,50 +35,71 @@ public class MainActivity extends AppCompatActivity {
         et_password = (EditText) findViewById(R.id.et_password);
         btn_remember = (Button) findViewById(R.id.btn_remember);
         btn_login = (Button) findViewById(R.id.btn_login);
-        tv_display = (TextView) findViewById(R.id.tv_display);
 
-    }
+        et_username.setOnKeyListener(new EditText.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                String user = preferences.getString("username","");
+                String pass = preferences.getString("password","");
 
-    public void saveStorage (View view) {
-        String message = et_username.getText().toString();
-        try {
-            fos = openFileOutput("output.txt", Context.MODE_PRIVATE);
-            fos.write(message.getBytes());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                fos.close();
-            } catch (IOException e){
-                e.printStackTrace();
+                String sUsername = et_username.getText().toString();
+
+                if(!user.isEmpty()) {
+                    if (sUsername.equals(user)) {
+                        et_password.setText(pass);
+                        et_password.setBackgroundColor(Color.YELLOW);
+                    }
+                    else if (!(sUsername.equals(user))){
+                        et_password.setText("");
+                        et_password.setBackgroundColor(Color.TRANSPARENT);
+                    }
+                }
+
+                return false;
             }
-        }
-        Toast.makeText(this, "Message saved!", Toast.LENGTH_SHORT).show();
-    }
+        });
 
-    public void displayStorage (View view) {
+        et_password.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (hasFocus) {
+                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    String user = preferences.getString("username","");
+                    String pass = preferences.getString("password","");
 
-        StringBuffer buffer = new StringBuffer();
-        int read = 0;
-        try {
-            fis = openFileInput("output.txt");
-            while ((read = fis.read()) != -1) {
-                buffer.append((char) read);
+                    String sUsername = et_username.getText().toString();
+
+                    if(!user.isEmpty()) {
+                        if (sUsername.equals(user)) {
+                            et_password.setText(pass);
+                            et_password.setBackgroundColor(Color.YELLOW);
+                        }
+                        else if (!(sUsername.equals(user))){
+                            et_password.setText("");
+                            et_password.setBackgroundColor(Color.TRANSPARENT);
+                        }
+                    }
+
+                }
             }
-            fis.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        tv_display.setText(buffer.toString());
+        });
+    }
+
+    public void rememberMe (View view){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("username", et_username.getText().toString());
+        editor.putString("password", et_password.getText().toString());
+        editor.commit();
+        Toast.makeText(this, "Preference Saved!", Toast.LENGTH_SHORT).show();
 
     }
 
-    public void welcomePage (View view){
+    public void login (View view){
         Intent intent = new Intent(this, Main2Activity.class);
         startActivity(intent);
     }
+
+
+
 }

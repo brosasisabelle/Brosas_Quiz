@@ -7,24 +7,15 @@
     android:background="@color/colorAccent"
     tools:context="com.isabelle.brosas_quiz.Main2Activity">
 
-    <TextView
-        android:id="@+id/tv_welcome"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="114dp"
-        android:text="WELCOME"
-        android:textSize="36sp"
-        android:textStyle="bold|italic" />
 
     <TextView
         android:id="@+id/tv_display"
-        android:layout_width="125dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_below="@+id/tv_welcome"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/welcome"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="75dp"
+        android:textSize="30sp" />
 
     <Button
         android:id="@+id/btn_logout"
@@ -35,5 +26,14 @@
         android:layout_marginBottom="72dp"
         android:background="@android:color/holo_orange_light"
         android:text="Logout"
-        android:onClick="loginPage"/>
+        android:onClick="logout"/>
+
+    <ImageView
+        android:id="@+id/welcome"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        app:srcCompat="@drawable/orientation"
+        android:layout_marginTop="33dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

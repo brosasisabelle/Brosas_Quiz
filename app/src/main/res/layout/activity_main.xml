@@ -50,7 +50,7 @@
         android:layout_below="@+id/et_password"
         android:layout_alignLeft="@+id/et_password"
         android:layout_alignStart="@+id/et_password"
-        android:onClick="saveStorage"/>
+        android:onClick="rememberMe"/>
 
     <Button
         android:id="@+id/btn_login"
@@ -62,6 +62,6 @@
         android:layout_alignRight="@+id/et_password"
         android:background="@android:color/holo_orange_light"
         android:text="Login"
-        android:onClick="welcomePage"/>
+        android:onClick="login"/>
 
 </RelativeLayout>
